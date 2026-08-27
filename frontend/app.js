@@ -3,21 +3,27 @@ document.getElementById('generateBtn').addEventListener('click', () => {
     const firstName = document.getElementById('firstName').value;
     const lastName = document.getElementById('lastName').value;
 
-    fetch('http://localhost:8080/generate', {
+    fetch('/generate', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ state, firstName, lastName })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) throw new Error(`请求失败 (${response.status})`);
+        return response.json();
+    })
     .then(data => {
         const licenseNumber = data.licenseNumber;
         document.getElementById('licenseNumber').textContent = licenseNumber;
         generateBarcode(licenseNumber);
         document.getElementById('downloadBtn').style.display = 'block';
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+        document.getElementById('licenseNumber').textContent = `错误：${error.message}`;
+        console.error('Error:', error);
+    });
 });
 
 function generateBarcode(data) {

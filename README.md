@@ -1,48 +1,39 @@
-# U.S. Driver's License 🪪 Generator and Validator
+# Driver's License Generator（演示项目）
 
-This web application allows users to generate and validate U.S. driver's licenses using customizable inputs. It also supports generating PDF417 barcodes for the licenses and provides functionalities to download the barcode as an SVG file. The application includes animations, a dark/light mode switch, and state-specific license validation.
+这是一个用于开发测试的美国驾照号码与 PDF417 条码演示项目。生成的内容是随机的合成数据，不是真实证件，也不能用于身份验证、制证或冒充他人。
 
-## Features
+## 最快启动方式
 
-- **Generate U.S. Driver's License Numbers**: Based on user input and selected state.
-- **Validate License Numbers**: Ensures the generated license number conforms to state-specific formats.
-- **PDF417 Barcode Generation**: Encodes license data into a PDF417 barcode.
-- **Download Barcode**: Save the barcode as an SVG file.
-- **Light/Dark Mode Toggle**: Switch between light and dark themes for better user experience.
-- **Responsive UI/UX**: Smooth interactions and animations for a sleek interface.
-- **Offline Functionality**: Service worker support for offline use and faster loading.
+项目提供了一个零依赖的 Python 开发服务器，同时服务网页和 API。macOS/Linux 终端执行：
 
-## Installation
+```bash
+cd /Users/x/code/driver-license-generator
+python3 backend/server.py
+```
 
-1. **Clone the Repository**:
-    ```bash
-    git clone https://github.com/papaguycodes/driver-license-generator.git
-    ```
+浏览器打开 <http://127.0.0.1:8080>。页面中选择州、填写名字和姓氏，点击 **Generate License**；随后会显示合成号码和 PDF417 条码，点击 **Download Barcode** 可下载 SVG。**Toggle Theme** 可切换深色模式。
 
-2. **Navigate to the Project Directory**:
-    ```bash
-    cd driver-license-generator
-    ```
+按 `Ctrl-C` 停止服务器。
 
-3. **Backend Setup**:
-   - Navigate to the `backend` directory.
-   - Build and run the backend:
-     ```bash
-     ./gradlew run
-     ```
+## API
 
-4. **Frontend Setup**:
-   - Open `frontend/index.html` in a web browser to view the application.
+生成：
 
-## Dependencies
+```bash
+curl -X POST http://127.0.0.1:8080/generate \
+  -H 'Content-Type: application/json' \
+  -d '{"state":"CA","firstName":"John","lastName":"Doe"}'
+```
 
-- **Ktor**: For building the backend server in Kotlin.
-- **PDF417.js**: A library for generating PDF417 barcodes.
-- **Faker**: For generating fake data in the backend (optional).
+校验本项目生成的合成格式：
 
-## Service Workers
+```bash
+curl -X POST http://127.0.0.1:8080/validate \
+  -H 'Content-Type: application/json' \
+  -d '{"state":"CA","licenseNumber":"CA-JD-123456"}'
+```
 
-The app uses service workers to cache assets for offline functionality and faster loading. Make sure your browser supports service workers and HTTPS for full functionality.
+后端也保留了 `backend/src` 下的 Ktor 原型，但它不是当前默认启动路径；默认 Python 服务便于无需下载 Gradle/Kotlin 工具链的本地体验。
 
 ## License
 
