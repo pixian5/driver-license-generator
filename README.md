@@ -11,7 +11,7 @@ cd /Users/x/code/driver-license-generator
 python3 backend/server.py
 ```
 
-浏览器打开 <http://127.0.0.1:8080>。页面中选择州、填写名字和姓氏，点击 **Generate License**；随后会显示合成号码和 PDF417 条码，点击 **Download Barcode** 可下载 SVG。**Toggle Theme** 可切换深色模式。
+浏览器打开 <http://127.0.0.1:8080>。页面中选择州、填写名字和姓氏，点击 **Generate License**；随后会显示合成号码和条码，点击 **Download Barcode** 可下载 SVG。**Toggle Theme** 可切换深色模式。外部 PDF417 库不可用时，页面会自动使用本地 SVG 降级图形，保证演示流程不中断。
 
 按 `Ctrl-C` 停止服务器。
 
